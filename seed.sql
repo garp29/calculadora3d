@@ -9,12 +9,13 @@ PRAGMA foreign_keys = ON;
 -- Categorías
 -- ------------------------------------------------------------
 INSERT INTO categoria (nombre, descripcion) VALUES
-    ('Básica',    'Operaciones aritméticas fundamentales'),
-    ('Potencias', 'Potencias, raíces y exponentes'),
-    ('Avanzada',  'Módulo, porcentaje, factorial y valor absoluto');
+    ('Básica',        'Operaciones aritméticas fundamentales'),
+    ('Potencias',     'Potencias, raíces y exponentes'),
+    ('Avanzada',      'Módulo, porcentaje, factorial y valor absoluto'),
+    ('Trigonometría', 'Funciones trigonométricas e inversas');
 
 -- ------------------------------------------------------------
--- Catálogo inicial: las 10 operaciones
+-- Catálogo inicial
 -- ------------------------------------------------------------
 INSERT INTO operacion (nombre, simbolo, descripcion, aridad, id_categoria) VALUES
     ('Suma',            '+',    'Suma dos números',                        2, (SELECT id_categoria FROM categoria WHERE nombre = 'Básica')),
@@ -26,7 +27,13 @@ INSERT INTO operacion (nombre, simbolo, descripcion, aridad, id_categoria) VALUE
     ('Módulo',          '%',    'Residuo de la división entera',           2, (SELECT id_categoria FROM categoria WHERE nombre = 'Avanzada')),
     ('Porcentaje',      'pct',  'Calcula el porcentaje B de A',            2, (SELECT id_categoria FROM categoria WHERE nombre = 'Avanzada')),
     ('Factorial',       '!',    'Factorial de un entero no negativo',      1, (SELECT id_categoria FROM categoria WHERE nombre = 'Avanzada')),
-    ('Valor absoluto',  'abs',  'Valor absoluto de un número',             1, (SELECT id_categoria FROM categoria WHERE nombre = 'Avanzada'));
+    ('Valor absoluto',  'abs',  'Valor absoluto de un número',             1, (SELECT id_categoria FROM categoria WHERE nombre = 'Avanzada')),
+    ('Seno',            'sin',  'Función seno',                            1, (SELECT id_categoria FROM categoria WHERE nombre = 'Trigonometría')),
+    ('Coseno',          'cos',  'Función coseno',                          1, (SELECT id_categoria FROM categoria WHERE nombre = 'Trigonometría')),
+    ('Tangente',        'tan',  'Función tangente',                        1, (SELECT id_categoria FROM categoria WHERE nombre = 'Trigonometría')),
+    ('Arcoseno',        'asin', 'Función arcoseno',                        1, (SELECT id_categoria FROM categoria WHERE nombre = 'Trigonometría')),
+    ('Arcocoseno',      'acos', 'Función arcocoseno',                      1, (SELECT id_categoria FROM categoria WHERE nombre = 'Trigonometría')),
+    ('Arcotangente',    'atan', 'Función arcotangente',                    1, (SELECT id_categoria FROM categoria WHERE nombre = 'Trigonometría'));
 
 -- ------------------------------------------------------------
 -- Historial de ejemplo (para probar las consultas con datos)
@@ -47,4 +54,3 @@ INSERT INTO historial (id_operacion, operando_a, operando_b, resultado, error, f
     ((SELECT id_operacion FROM operacion WHERE simbolo = '%'),    17,  5,     2,    NULL, '2026-10-25 12:00:00'),
     ((SELECT id_operacion FROM operacion WHERE simbolo = 'pct'),  200, 15,   30,    NULL, '2026-10-26 09:45:00'),
     ((SELECT id_operacion FROM operacion WHERE simbolo = '!'),    5,   NULL, 120,   NULL, '2026-10-26 17:00:00');
--- Nota: 'abs' queda sin uso a propósito, para probar el LEFT JOIN.
