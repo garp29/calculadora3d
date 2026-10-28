@@ -6,12 +6,14 @@
 PRAGMA foreign_keys = ON;
 
 -- Se borra en orden inverso a las dependencias para poder re-ejecutar
+DROP TABLE IF EXISTS punto;
+DROP TABLE IF EXISTS serie;
 DROP TABLE IF EXISTS historial;
 DROP TABLE IF EXISTS operacion;
 DROP TABLE IF EXISTS categoria;
 
 -- ------------------------------------------------------------
--- Categoría de operaciones (Básica, Avanzada, ...)
+-- Categoría de operaciones (Básica, Avanzada, Trigonometría...)
 -- ------------------------------------------------------------
 CREATE TABLE categoria (
     id_categoria  INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,6 +54,38 @@ CREATE TABLE historial (
         ON DELETE RESTRICT
 );
 
--- Índices para acelerar los JOIN y las búsquedas por fecha
+-- ------------------------------------------------------------
+-- Series de evaluaciones de funciones
+-- ------------------------------------------------------------
+CREATE TABLE serie (
+    id_serie      INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_operacion  INTEGER NOT NULL,
+    xmin          REAL NOT NULL,
+    xmax          REAL NOT NULL,
+    paso          REAL NOT NULL,
+    modo          TEXT NOT NULL DEFAULT 'grados',
+    fecha         TEXT NOT NULL DEFAULT (datetime('now', 'localtime')),
+    FOREIGN KEY (id_operacion) REFERENCES operacion(id_operacion)
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
+);
+
+-- ------------------------------------------------------------
+-- Puntos individuales pertenecientes a una serie
+-- y es NULL cuando la función no está definida (asíntota)
+-- ------------------------------------------------------------
+CREATE TABLE punto (
+    id_punto  INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_serie  INTEGER NOT NULL,
+    x         REAL NOT NULL,
+    y         REAL,
+    FOREIGN KEY (id_serie) REFERENCES serie(id_serie)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+);
+
+-- Índices para acelerar los JOIN y las búsquedas por fecha/serie
 CREATE INDEX idx_historial_operacion ON historial(id_operacion);
 CREATE INDEX idx_historial_fecha     ON historial(fecha);
+CREATE INDEX idx_serie_operacion     ON serie(id_operacion);
+CREATE INDEX idx_punto_serie         ON punto(id_serie);
