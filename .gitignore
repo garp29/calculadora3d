@@ -1,0 +1,14 @@
+# Clases compiladas de Java
+out/
+bin/
+
+# Caché de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Archivos temporales del sistema operativo / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
