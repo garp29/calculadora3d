@@ -1,4 +1,4 @@
-# Proyecto Integrado: La Calculadora — Java, Python y SQLite
+# Proyecto Integrado: La Calculadora — Java, Python y SQLite Group 67
 
 | Dato | Detalle |
 | :--- | :--- |
